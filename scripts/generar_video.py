@@ -191,6 +191,7 @@ def render(song, dia, out: Path, segs: int) -> Path:
             frase = frases[i % len(frases)] if frases else None
             clip = tmpdir / f"seg_{i}.mp4"
             # Cada toma: 1 imagen -> zoompan+overlay -> clip corto (sin cuelgue)
+            # Pre-escalamos la imagen a 720x1280 para que el zoompan sea rapido
             sw = int(W * ZOOM); sh = int(H * ZOOM)
             xmax, ymax = sw - W, sh - H
             xf, xt, yf, yt = pan
@@ -205,6 +206,7 @@ def render(song, dia, out: Path, segs: int) -> Path:
             y_frase = int(H*0.60)
             fade_e = "if(lt(t,0.6),t/0.6,1)" if fade else "1"
             chain = [
+                "scale=720:1280:force_original_aspect_ratio=increase",
                 f"scale={sw}:{sh}:force_original_aspect_ratio=increase,crop={sw}:{sh}",
                 f"zoompan=z={z}:d={fr}:x={x_expr}:y={y_expr}:s={W}x{H}:fps={FPS}",
                 "eq=contrast=1.08:saturation=0.95:brightness=0.02",
@@ -212,9 +214,25 @@ def render(song, dia, out: Path, segs: int) -> Path:
                 f"drawbox=x=0:y={int(H*0.55)}:w={W}:h={int(H*0.45)}:color=black@0.45:t=fill",
             ]
             if frase:
+                # wrap manual: si la frase es larga, la partimos en 2 lineas
+                words = frase.split()
+                lines = []
+                cur = ""
+                for w in words:
+                    if len(cur + " " + w) <= 22:
+                        cur = (cur + " " + w).strip()
+                    else:
+                        if cur:
+                            lines.append(cur)
+                        cur = w
+                if cur:
+                    lines.append(cur)
+                wrapped = r"\n".join(lines)
+                n_lines = len(lines)
+                y_frase_top = y_frase - (n_lines - 1) * 34
                 chain.append(
-                    f"drawtext=fontfile={fon}:text='{esc(frase)}':fontcolor=white:"
-                    f"fontsize=58:line_spacing=10:x=(w-text_w)/2:y={y_frase}:"
+                    f"drawtext=fontfile={fon}:text='{esc(wrapped)}':fontcolor=white:"
+                    f"fontsize=46:line_spacing=10:x=(w-text_w)/2:y={y_frase_top}:"
                     f"shadowcolor=black@0.9:shadowx=3:shadowy=3:alpha='{fade_e}'")
             chain += [
                 f"drawtext=fontfile={fon}:text='{esc(song['titulo'])}':fontcolor=white:"
@@ -232,7 +250,7 @@ def render(song, dia, out: Path, segs: int) -> Path:
                    "-c:v", "libx264", "-preset", PRESET, "-crf", str(CRF),
                    "-threads", str(THREADS), "-pix_fmt", "yuv420p",
                    "-movflags", "+faststart", "-an", str(clip)]
-            r = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+            r = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
             if r.returncode != 0:
                 raise GenError(f"ffmpeg fallo en toma {i}:\n{r.stderr[-1200:]}")
             if not clip.exists() or clip.stat().st_size == 0:
