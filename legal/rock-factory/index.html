@@ -23,7 +23,6 @@
   }
   a{color:var(--amber);text-decoration:none}
   .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
-  /* top bar */
   .topbar{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);
     background:rgba(10,10,15,.72);border-bottom:1px solid var(--line)}
   .topbar .wrap{display:flex;align-items:center;gap:14px;height:64px;justify-content:space-between}
@@ -31,7 +30,6 @@
   .brand .logo{width:40px;height:40px;display:block;filter:drop-shadow(0 0 8px rgba(240,180,41,.5))}
   .nav a{margin-left:18px;color:var(--muted);font-weight:600;font-size:.95rem}
   .nav a:hover{color:var(--ink)}
-  /* hero */
   .hero{padding:72px 0 56px;text-align:center}
   .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);
     background:var(--bg2);color:var(--muted);padding:7px 14px;border-radius:999px;
@@ -49,7 +47,6 @@
   .btn{border:1px solid var(--line);background:var(--bg2);color:var(--ink);
     padding:12px 20px;border-radius:12px;font-weight:700}
   .btn.primary{background:linear-gradient(92deg,var(--amber),var(--magenta));color:#1a1205;border:none}
-  /* sections */
   section{padding:54px 0}
   h2{font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 8px;font-weight:900;letter-spacing:-.5px}
   h2 .accent{color:var(--amber)}
@@ -65,9 +62,8 @@
   .card p{margin:0;color:var(--muted);font-size:.95rem}
   .card::after{content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;
     background:radial-gradient(300px 120px at 100% 0,rgba(0,229,255,.08),transparent 70%)}
-  /* steps */
   .steps{counter-reset:s;margin-top:28px;display:grid;gap:16px}
-  .step{display:flex;gap:18px;align:flex-start;background:var(--bg2);border:1px solid var(--line);
+  .step{display:flex;gap:18px;align-items:flex-start;background:var(--bg2);border:1px solid var(--line);
     border-radius:14px;padding:18px 20px}
   .step .num{counter-increment:s;flex:0 0 46px;height:46px;border-radius:12px;
     display:grid;place-items:center;font-weight:900;font-size:1.2rem;color:#1a1205;
@@ -75,16 +71,13 @@
   .step .num::before{content:counter(s,decimal-leading-zero)}
   .step h3{margin:2px 0 4px;font-size:1.08rem}
   .step p{margin:0;color:var(--muted);font-size:.95rem}
-  /* scopes */
   .scope-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
   .scope{display:flex;align-items:center;gap:10px;border:1px solid var(--line);
     background:var(--bg2);border-radius:12px;padding:12px 16px}
   .scope code{color:var(--cyan);font-weight:700;font-size:.95rem}
   .scope .tag{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-  /* channels */
   .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
   .chip{border:1px solid var(--line);background:var(--bg2);border-radius:999px;padding:8px 16px;font-weight:600}
-  /* legal bar */
   .legalbar{border-top:1px solid var(--line);background:rgba(18,18,26,.6)}
   .legalbar .wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:26px 22px}
   .legalbar a{font-weight:600}
@@ -93,12 +86,9 @@
 </style>
 </head>
 <body>
-
-<!-- TOP BAR -->
 <div class="topbar">
   <div class="wrap">
     <div class="brand">
-      <!-- inline SVG logo: amp + lightning -->
       <svg class="logo" viewBox="0 0 64 64" aria-label="Rock Factory">
         <defs>
           <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
@@ -121,7 +111,6 @@
   </div>
 </div>
 
-<!-- HERO -->
 <header class="hero">
   <div class="wrap">
     <span class="pill"><span class="dot"></span> App oficial · TikTok for Developers</span>
@@ -145,7 +134,6 @@
   </div>
 </header>
 
-<!-- QUÉ HACE -->
 <section id="que">
   <div class="wrap">
     <h2>Qué <span class="accent">hace</span> Rock Factory</h2>
@@ -170,7 +158,6 @@
   </div>
 </section>
 
-<!-- CÓMO FUNCIONA -->
 <section id="como">
   <div class="wrap">
     <h2>Cómo <span class="accent">funciona</span></h2>
@@ -184,7 +171,6 @@
   </div>
 </section>
 
-<!-- INTEGRACIÓN -->
 <section id="integracion">
   <div class="wrap">
     <h2>Integración con <span class="accent">TikTok</span></h2>
@@ -214,7 +200,6 @@
   </div>
 </section>
 
-<!-- LEGAL -->
 <section id="legal">
   <div class="wrap">
     <h2>Documentos <span class="accent">legales</span></h2>
@@ -236,7 +221,6 @@
   </div>
 </section>
 
-<!-- LEGAL BAR -->
 <div class="legalbar" id="contact">
   <div class="wrap">
     <div>
