@@ -238,7 +238,7 @@ def main(argv=None) -> int:
     p.add_argument("--bg", required=True, type=Path, help="imagen de fondo")
     p.add_argument("--title", required=True)
     p.add_argument("--artist", required=True)
-    p.add_argument("--brand", default="ROCK LEGENDS CLUB")
+    p.add_argument("--brand", default="ROCK FACTORY")
     p.add_argument("--duration", type=float, default=30.0)
     p.add_argument("--segments", type=int, default=3,
                    help="cantidad de cortes con recorrido de camara distinto")
