@@ -1,0 +1,42 @@
+=== DESCRIPTION (pegar en el campo "Description *" de la app Rock Factory, mín. 120 caracteres) ===
+
+Rock Factory es una herramienta interna de uso privado que prepara y carga contenido
+audiovisual original (reflexiones, frases y cultura del rock) en los borradores del
+canal propio en TikTok. El titular autoriza la app una sola vez con TikTok Login Kit;
+la app muestra el avatar y nombre de usuario antes de cada carga y sube el video a
+borradores mediante la Content Posting API (scope video.upload). La publicación final y
+la elección del audio las decide manualmente el titular desde la app oficial de TikTok.
+No es un servicio público ni admite usuarios externos.
+
+=== EXPLAIN HOW EACH PRODUCT/SCOPE WORKS (pegar en "App review -> Explain how each product and scope works", mín. 1000 caracteres) ===
+
+Producto: Content Posting API (Opción A, Direct Post: OFF)
+Alcance del producto: la aplicación usa la Content Posting API únicamente para subir
+videos a la sección de borradores (inbox) de la cuenta de TikTok autorizada del propio
+canal. No publica automáticamente; la decisión de publicar y la elección de la música
+definitiva las toma el titular manualmente desde la aplicación oficial de TikTok. Esto
+encaja con el modelo de uso privado del canal propio y evita los requisitos de UI de la
+opción de publicación directa.
+
+Scope user.info.basic:
+Se utiliza para consultar el nombre de usuario y el avatar de la cuenta de TikTok
+autorizada antes de cada carga. El objetivo es mostrar en pantalla, al titular, qué
+cuenta recibirá el contenido y confirmar el envío. Este dato no se almacena: se consulta
+en el momento de cada operación y solo sirve como verificación visual. No se accede a
+seguidores, mensajes ni comentarios.
+
+Scope video.upload:
+Es el permiso central de la integración. Permite a la aplicación enviar el archivo de
+video (FILE_UPLOAD, bytes del propio servidor) a los borradores de la cuenta autorizada
+a través de POST /v2/video/upload/. El flujo es: (1) el titular ejecuta el script de
+carga en su servidor privado; (2) la app consulta user.info.basic para mostrar la cuenta
+destino; (3) la app sube el video a borradores; (4) el titular abre TikTok en su celular,
+revisa el borrador, elige la música de la biblioteca licenciada y publica. La aplicación
+nunca añade marcas de agua ni texto promocional.
+
+Entorno de demostración:
+El video demo fue grabado usando el sandbox de TikTok for Developers, autorizando la
+cuenta del canal como cuenta de prueba, y muestra el flujo completo: autorización Login
+Kit, consulta de user.info.basic, carga a borradores con video.upload y verificación del
+borrador en la app de TikTok. Todos los productos y scopes seleccionados se demuestran en
+el video.
