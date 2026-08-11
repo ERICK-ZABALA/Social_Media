@@ -37,7 +37,7 @@ URLs públicas y TikTok las valida de forma estricta. Un espacio se convierte en
 
 | Canal | Slug | Plataforma inicial | Estado |
 |---|---|---|---|
-| Rock Legends Club | `rock-legends-club` | TikTok | En registro de app |
+| Rock Factory | `rock-factory` | TikTok | En registro de app (sandbox) |
 | Insight Star | `insight-star` | LinkedIn/X | Pendiente |
 | IA Generativa News | `ia-generativa-news` | Multi | Pendiente |
 | Reflexciones | `reflexciones` | TikTok/Shorts | Pendiente |
