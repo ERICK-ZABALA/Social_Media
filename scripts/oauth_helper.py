@@ -32,7 +32,14 @@ import webbrowser
 
 TOKEN_HOST = "https://open.tiktokapis.com"
 AUTH_URL = "https://www.tiktok.com/v2/auth/authorize/"
-REDIRECT_URI = "http://localhost:8080/callback"
+# El Redirect URI DEBE empezar con https:// (TikTok lo exige). Se usa un tunel
+# HTTPS independiente (ngrok / cloudflared) que apunte a http://localhost:8080.
+# Configuralo con --redirect-uri o la env TIKTOK_REDIRECT_URI.
+# Ejemplo con cloudflared:  cloudflared tunnel --url http://localhost:8080
+# Ejemplo con ngrok:        ngrok http 8080   -> te da https://xxxx.ngrok.io
+REDIRECT_URI = os.environ.get(
+    "TIKTOK_REDIRECT_URI", "https://TU-TUNEL.example.com/callback"
+)
 SCOPES = "user.info.basic,video.upload"
 TOKEN_FILE = os.path.expanduser("~/.tiktok_rock_factory_token")
 KEY_FILE = os.path.expanduser("~/.tiktok_rock_factory_key")
@@ -94,7 +101,10 @@ def _exchange(client_key, client_secret, code):
         return json.loads(r.read().decode())
 
 
-def run(client_key=None):
+def run(client_key=None, redirect_uri=None):
+    global REDIRECT_URI
+    if redirect_uri:
+        REDIRECT_URI = redirect_uri
     client_key = _load_key(client_key)
     client_secret = _load_secret()
     if not client_key:
@@ -143,5 +153,8 @@ if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("--client-key", default=None)
+    ap.add_argument("--redirect-uri", default=None,
+                    help="Redirect URI https (debe coincidir con el portal de TikTok). "
+                         "Ej: https://xxxx.ngrok.io/callback o el de cloudflared.")
     a = ap.parse_args()
-    run(a.client_key)
+    run(a.client_key, a.redirect_uri)

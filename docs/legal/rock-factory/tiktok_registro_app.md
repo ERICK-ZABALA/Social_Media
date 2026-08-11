@@ -118,14 +118,28 @@ Pedir solo lo que se usa. Scopes de más = más motivos de rechazo.
 
 ---
 
-## PASO 5 — Redirect URI de OAuth
+## PASO 5 — Redirect URI de OAuth (HTTPS obligatorio)
 
-En **Login Kit** configurar el redirect URI. Para desarrollo local:
+TikTok exige que el Redirect URI empiece con `https://`. No acepta `http://localhost`.
+Se resuelve con un **túnel HTTPS independiente** (ngrok o cloudflared) que apunte a
+`http://localhost:8080` en la máquina donde corre `scripts/oauth_helper.py`.
 
-    http://localhost:8080/callback
+Flujo:
+1. En esa máquina, levantar el túnel:
+   - ngrok:   `ngrok http 8080`  → da `https://xxxx.ngrok.io`
+   - cloudflared: `cloudflared tunnel --url http://localhost:8080` → da `https://xxxx.trycloudflare.com`
+2. El redirect URI a poner en el portal (Login Kit → Redirect URI) es:
+   `https://<host-del-tunel>/callback`
+3. Configurar el script con ese mismo valor:
+   `python3 scripts/oauth_helper.py --redirect-uri https://<host-del-tunel>/callback`
+   o exportando `TIKTOK_REDIRECT_URI`.
 
-Debe coincidir **carácter por carácter** con el que use el código, o el OAuth falla
-con `redirect_uri_mismatch`.
+El túnel es independiente de insightstar.net (no se usa el dominio de la empresa).
+Apagar el túnel cuando no se esté haciendo OAuth.
+
+> Nota: el Redirect URI NO tiene que coincidir con el Web/Desktop URL (github.io).
+> TikTok solo pide que el dominio mostrado en el DEMO VIDEO coincida con el
+> Web/Desktop URL. El callback por túnel no aparece en la página web del demo.
 
 ---
 
