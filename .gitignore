@@ -10,3 +10,4 @@ media/
 .env
 *client_secret*.json
 *token*.json
+channels/*/media/

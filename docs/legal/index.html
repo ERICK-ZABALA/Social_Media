@@ -3,60 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rock Legends Publisher</title>
+<title>Insightstar Media — Canales</title>
 <style>
   :root { color-scheme: dark; }
   body { background:#111; color:#e8e8e8; font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
          max-width:760px; margin:0 auto; padding:64px 24px 96px; }
-  header { display:flex; align-items:center; gap:20px; margin-bottom:2.5em; }
-  header img { width:88px; height:88px; border-radius:18px; }
-  h1 { color:#f0b429; font-size:2rem; margin:0; }
-  .sub { color:#999; margin-top:.3em; }
-  h2 { color:#f0b429; font-size:1.15rem; margin-top:2.2em; }
+  h1 { color:#f0b429; font-size:2rem; margin-bottom:.1em; }
+  .sub { color:#999; margin-bottom:2.5em; }
   a { color:#f0b429; }
-  ul { padding-left:1.2em; }
-  nav { margin-top:3em; padding-top:1.5em; border-top:1px solid #333; font-size:.95rem; }
+  .card { display:flex; align-items:center; gap:18px; border:1px solid #333; border-radius:12px;
+          padding:18px 20px; margin-bottom:14px; text-decoration:none; color:#e8e8e8; }
+  .card:hover { border-color:#f0b429; }
+  .card img { width:56px; height:56px; border-radius:12px; }
+  .card .name { color:#f0b429; font-weight:600; }
+  .card .desc { color:#999; font-size:.9rem; }
+  .soon { color:#666; font-size:.85rem; margin-top:2.5em; }
 </style>
 </head>
 <body>
-<header>
-  <img src="./icon.png" alt="Rock Legends">
+<h1>Insightstar Media</h1>
+<div class="sub">Documentación legal de nuestros canales</div>
+
+<a class="card" href="./rock-legends-club/index.html">
+  <img src="./rock-legends-club/icon.png" alt="Rock Legends Club">
   <div>
-    <h1>Rock Legends Publisher</h1>
-    <div class="sub">Herramienta interna de publicación de contenido</div>
+    <div class="name">Rock Legends Club</div>
+    <div class="desc">Historia y cultura del rock · TikTok</div>
   </div>
-</header>
+</a>
 
-<h2>Qué hace</h2>
-<p>Rock Legends Publisher prepara y carga contenido audiovisual original sobre historia
-y cultura del rock en los borradores del canal Rock Legends en TikTok. El titular del
-canal revisa cada video en la aplicación oficial de TikTok y decide manualmente si
-publicarlo.</p>
-
-<h2>Cómo funciona</h2>
-<ul>
-  <li>El titular autoriza la aplicación una sola vez mediante TikTok Login Kit.</li>
-  <li>La aplicación muestra el avatar y el nombre de usuario de la cuenta de destino
-      antes de cada carga, para confirmar el envío.</li>
-  <li>El video se sube a los borradores mediante la Content Posting API
-      (scope <code>video.upload</code>).</li>
-  <li>La publicación final es siempre una decisión manual del titular.</li>
-</ul>
-
-<h2>Uso privado</h2>
-<p>No es un servicio público: no admite registro de usuarios externos y se utiliza
-exclusivamente sobre el canal propio.</p>
-
-<h2>Contenido y derechos</h2>
-<p>Todo el material es original, de dominio público o licenciado. La aplicación no
-añade marcas de agua ni texto promocional al contenido.</p>
-
-<h2>Contacto</h2>
-<p><a href="mailto:rocklegendsclub@gmail.com">rocklegendsclub@gmail.com</a></p>
-
-<nav>
-  <a href="./terms.html">Términos de Servicio</a> ·
-  <a href="./privacy.html">Política de Privacidad</a>
-</nav>
+<p class="soon">Próximamente: Insight Star · IA Generativa News · Reflexciones · Cuentos Caricaturas</p>
 </body>
 </html>
