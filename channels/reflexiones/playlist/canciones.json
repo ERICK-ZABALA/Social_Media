@@ -1,0 +1,82 @@
+{
+  "nota": "Playlist reflexiva en español para el canal Reflexiones. Las frases son CITAS BREVES coherentes con el tema de cada canción (no la letra completa, por derechos de autor). El audio NO se incrusta: se elige en TikTok al publicar (biblioteca licenciada).",
+  "canciones": [
+    {
+      "id": "depende",
+      "titulo": "Depende",
+      "artista": "Jarabe de Palo",
+      "tema": "la vida depende de como la mires, la actitud lo es todo",
+      "frases": [
+        "Depende de ti mirar la vida de frente",
+        "Todo depende del cristal con que se mire",
+        "Hoy puede ser un buen dia si tu quieres"
+      ]
+    },
+    {
+      "id": "celebrala_vida",
+      "titulo": "Celebra la vida",
+      "artista": "Axel",
+      "tema": "celebrar lo simple, vivir agradecido",
+      "frases": [
+        "Celebra la vida, aunque duela a veces",
+        "Cada amanecer es una segunda chance",
+        "Lo mejor de la vida esta en lo simple"
+      ]
+    },
+    {
+      "id": "aprender_a_quererte",
+      "titulo": "Aprender a quererte",
+      "artista": "Morat",
+      "tema": "quererse uno mismo, el amor propio",
+      "frases": [
+        "Aprende a quererte antes de querer a otro",
+        "Tu paz vale mas que tener la razon",
+        "El amor propio no se negocia"
+      ]
+    },
+    {
+      "id": "guerras_perdidas",
+      "titulo": "Guerras Perdidas",
+      "artista": "Bacilos",
+      "tema": "soltar, aceptar las derrotas, seguir caminando",
+      "frases": [
+        "Somos pasajeros en esta vida",
+        "No todas las guerras valen la pena",
+        "Lo importante es seguir caminando"
+      ]
+    },
+    {
+      "id": "hoy_es_domingo",
+      "titulo": "Hoy Es Domingo",
+      "artista": "Diego Torres",
+      "tema": "disfrutar el presente, la calma",
+      "frases": [
+        "Hoy es domingo, respira hondo",
+        "Disfruta cada momento sin prisas",
+        "La vida pasa mientras esperas el lunes"
+      ]
+    },
+    {
+      "id": "sin_miedo",
+      "titulo": "Sin Miedo",
+      "artista": "Rosana",
+      "tema": "el valor de seguir adelante sin miedo",
+      "frases": [
+        "Sigue adelante sin miedo",
+        "El miedo se va viviendo",
+        "Tu camino se hace al andar"
+      ]
+    },
+    {
+      "id": "loco",
+      "titulo": "Loco",
+      "artista": "Andres Calamaro",
+      "tema": "vivir intensamente, la locura de sentir",
+      "frases": [
+        "Vivir asi es mucho mas que estar loco",
+        "Sentir intensamente no tiene precio",
+        "La vida se vive una vez, a toda"
+      ]
+    }
+  ]
+}

@@ -11,3 +11,4 @@ media/
 *client_secret*.json
 *token*.json
 channels/*/media/
+channels/*/estado.json
