@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+data/
+*.db
+*.db-wal
+*.db-shm
+media/
+.env
+*client_secret*.json
+*token*.json
