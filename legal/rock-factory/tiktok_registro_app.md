@@ -240,6 +240,41 @@ Host: `https://open.tiktokapis.com`
 
 ---
 
+---
+
+## ESQUEMA MULTI-CUENTA (1 app, 4 cuentas) — actualizado 2026-08-12
+
+La app **"Rock Factory" es UNA sola** y su revisión de scopes
+(`user.info.basic` + `video.upload`) autoriza a TODAS las cuentas del proyecto.
+No se genera una app por canal. Cuentas ya creadas en TikTok (región Francia, SIM
++33) y listas para dar el consentimiento OAuth cuando la app esté aprobada:
+
+| Canal (slug)         | Email de la cuenta TikTok        | Archivo de token (chmod 600)              |
+|---|---|---|
+| rock-factory         | rock.factory@outlook.com         | `~/.tiktok_rock_factory_token`           |
+| cuentos-caricaturas  | retro.cartoon@outlook.com        | `~/.tiktok_retro_cartoon_token`          |
+| insight-star         | insight.star@outlook.com         | `~/.tiktok_insight_star_token`           |
+| ia-generativa-news   | generative.ai.news@outlook.com   | `~/.tiktok_generative_ai_news_token`     |
+
+Flujo por cuenta (cuando la app esté aprobada):
+1. Consentimiento OAuth de ESA cuenta con la app Rock Factory (mismo `client_key`).
+2. El token resultante se guarda en su propio archivo (ruta arriba), chmod 600.
+3. En sandbox se agregan las 4 como cuentas de prueba (el sandbox permite hasta 5;
+   todo queda `SELF_ONLY` hasta que la app esté en producción).
+
+Inicializar la estructura de tokens (crea los archivos vacíos con permisos
+correctos; no sobrescribe los existentes):
+
+    python3 scripts/token_setup.py            # crea los 4 archivos
+    python3 scripts/token_setup.py --check    # lista cuáles ya existen
+
+> PENDIENTE (no bloquea la espera de aprobación): `scripts/subir_tiktok.py` y
+> `scripts/oauth_helper.py` hoy asumen UNA sola cuenta (hardcodean
+> `~/.tiktok_rock_factory_token`). Al aprobarse la app hay que parametrizarlos
+> con `--account <slug>` para leer el token de la cuenta correcta. VER tarea C.
+
+---
+
 ## CHECKLIST PARA ENVIAR A REVIEW (faltantes al 2026-08-11)
 
 - [ ] Description rellenado (mín. 120 chars) — texto en `scripts/legal_description.txt`
