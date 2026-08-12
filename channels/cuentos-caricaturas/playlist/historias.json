@@ -1,0 +1,21 @@
+{
+  "nota": "Micro-cuentos para el canal Cuentos Caricaturas (estilo anime Shinkai). Cada historia: titulo + lineas (una por toma del video). El video queda mudo; el audio se elige en TikTok al publicar.",
+  "historias": [
+    {
+      "titulo": "El sendero de la cascada",
+      "lineas": [
+        "Mika pedaleaba sin prisa por el sendero de tierra.",
+        "Al fondo del valle, el agua cantaba desde las alturas.",
+        "Y por un instante, el mundo entero parecio detenerse."
+      ]
+    },
+    {
+      "titulo": "Viento en la cuesta",
+      "lineas": [
+        "Soyu bajaba la cuesta con los brazos abiertos.",
+        "El cielo azul le recordo que era libre.",
+        "A veces, solo hacer girar las ruedas basta."
+      ]
+    }
+  ]
+}

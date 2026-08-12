@@ -119,6 +119,8 @@ def run(client_key=None, redirect_uri=None):
         "response_type": "code",
         "redirect_uri": REDIRECT_URI,
         "state": state,
+        "force_reauthorize": "true",
+        "prompt": "consent",
     }
     url = AUTH_URL + "?" + urllib.parse.urlencode(params)
     print("Abrindo navegador en:")
@@ -135,9 +137,18 @@ def run(client_key=None, redirect_uri=None):
     if not _auth_code:
         raise SystemExit("No se recibio el code. Revisa que el redirect URI sea exactamente http://localhost:8080/callback")
 
+    import datetime as _dt
     resp = _exchange(client_key, client_secret, _auth_code)
+    # Diagnostico: volcar respuesta cruda de TikTok sin importar el resultado
+    try:
+        with open("/tmp/tiktok_exchange_raw.json", "w") as _f:
+            _f.write(_dt.datetime.now().isoformat() + "\n" + json.dumps(resp, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
     if resp.get("error"):
         raise SystemExit(f"Error en token exchange: {resp}")
+    if "data" not in resp:
+        raise SystemExit(f"Respuesta inesperada de TikTok (sin 'data'): {resp}")
 
     tok = resp["data"]
     with open(TOKEN_FILE, "w") as f:
