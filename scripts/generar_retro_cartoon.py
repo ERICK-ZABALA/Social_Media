@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generador diario de cuentos caricatura (estilo anime Shinkai) para Rock Factory.
+"""Generador diario de Retro Cartoon (estilo anime Shinkai) para Rock Factory.
 
 Igual que generar_video.py pero usa lineas de un CUENTO (no frases reflexivas)
 como overlay por toma. El video queda MUDO (audio se elige en TikTok).
@@ -20,7 +20,7 @@ import tempfile
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
-CH = BASE / "channels" / "cuentos-caricaturas"
+CH = BASE / "channels" / "retro-cartoon"
 ESTADO = CH / "estado.json"
 HISTORIAS = CH / "playlist" / "historias.json"
 BG = CH / "assets" / "bg"
@@ -36,7 +36,7 @@ FONT_CANDIDATES = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
 ]
-BRAND = "CUENTOS CARICATURAS"
+BRAND = "RETRO CARTOON"
 
 PANS = [
     (0.0, 1.0, 0.0, 0.6),
