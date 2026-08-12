@@ -20,7 +20,7 @@ import tempfile
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
-CH = BASE / "channels" / "retro-cartoon"
+CH = BASE / "channels" / "cuentos-caricaturas"
 ESTADO = CH / "estado.json"
 HISTORIAS = CH / "playlist" / "historias.json"
 BG = CH / "assets" / "bg"

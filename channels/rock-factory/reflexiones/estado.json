@@ -1,0 +1,16 @@
+{
+  "canal": "reflexiones",
+  "dia": 2,
+  "ultima_generacion": "Aprender a quererte",
+  "playlist_index": 2,
+  "formato": {
+    "resolucion": [
+      1080,
+      1920
+    ],
+    "fps": 30,
+    "duracion": 30,
+    "tomas": 3,
+    "audio": "mudo (se elige en TikTok al publicar)"
+  }
+}

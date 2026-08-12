@@ -2,7 +2,7 @@
 """Generador diario de videos estilo Reflexiones (car-drive / golden hour).
 
 Flujo:
-  1. Lee channels/reflexiones/estado.json (dia, playlist_index).
+  1. Lee channels/rock-factory/reflexiones/estado.json (dia, playlist_index).
   2. Toma la cancion del dia desde playlist/canciones.json.
   3. Usa N frases de esa cancion (una por toma) como overlay reflexivo.
   4. Monta las imagenes de fondo (assets/bg/toma_XX.png) con paneo + corte
@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
-CH = BASE / "channels" / "reflexiones"
+CH = BASE / "channels" / "rock-factory" / "reflexiones"
 ESTADO = CH / "estado.json"
 PLAYLIST = CH / "playlist" / "canciones.json"
 BG = CH / "assets" / "bg"

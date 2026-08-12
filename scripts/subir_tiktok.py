@@ -13,7 +13,7 @@ Requisitos (app "Rock Factory" en developers.tiktok.com):
     - El video se sube por FILE_UPLOAD (bytes del servidor); no requiere verificacion de dominio.
 
 Uso:
-    python3 scripts/subir_tiktok.py --video channels/reflexiones/media/dia_001.mp4 \
+    python3 scripts/subir_tiktok.py --video channels/rock-factory/reflexiones/media/dia_001.mp4 \
         --caption "Celebra la vida - Reflexiones"
 
 El caption admite hasta 2200 caracteres. La musica NO se incrusta: se elige en TikTok.
