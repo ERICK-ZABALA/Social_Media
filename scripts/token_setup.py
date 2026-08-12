@@ -16,8 +16,8 @@ Uso:
 Después de correrlo, para cada cuenta ejecutás (con el redirect URI del túnel):
     python3 scripts/oauth_helper.py --account retro-cartoon --redirect-uri https://.../callback
 
-(La versión actual de oauth_helper.py guarda en ~/.tiktok_rock_factory_token;
- cuando se parametrice multi-cuenta, este mapa define los paths finales.)
+(oauth_helper.py ahora acepta --account y guarda el token en el archivo
+ correspondiente según scripts/accounts.py.)
 
 Mapa de cuentas -> archivo de token (todos chmod 600):
     rock-factory       ~/.tiktok_rock_factory_token

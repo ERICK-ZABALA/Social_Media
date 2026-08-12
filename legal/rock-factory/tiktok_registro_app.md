@@ -268,10 +268,11 @@ correctos; no sobrescribe los existentes):
     python3 scripts/token_setup.py            # crea los 4 archivos
     python3 scripts/token_setup.py --check    # lista cuáles ya existen
 
-> PENDIENTE (no bloquea la espera de aprobación): `scripts/subir_tiktok.py` y
-> `scripts/oauth_helper.py` hoy asumen UNA sola cuenta (hardcodean
-> `~/.tiktok_rock_factory_token`). Al aprobarse la app hay que parametrizarlos
-> con `--account <slug>` para leer el token de la cuenta correcta. VER tarea C.
+> ESTADO: hecho (2026-08-12). `scripts/accounts.py` centraliza el mapa
+> slug->email->archivo de token. `scripts/oauth_helper.py` y
+> `scripts/subir_tiktok.py` aceptan `--account <slug>` y leen/guardan el token
+> de la cuenta correcta. `scripts/token_setup.py` inicializa los 4 archivos.
+> Falta la APPROVAL de TikTok para ejecutar el OAuth real; el código ya está listo.
 
 ---
 

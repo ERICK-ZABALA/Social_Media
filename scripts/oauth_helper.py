@@ -25,10 +25,19 @@ import http.server
 import json
 import os
 import secrets
+import sys
 import threading
 import urllib.parse
 import urllib.request
 import webbrowser
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from accounts import (  # noqa: E402
+    CLIENT_KEY_FILE,
+    CLIENT_SECRET_FILE,
+    account_email,
+    token_path,
+)
 
 TOKEN_HOST = "https://open.tiktokapis.com"
 AUTH_URL = "https://www.tiktok.com/v2/auth/authorize/"
@@ -41,24 +50,21 @@ REDIRECT_URI = os.environ.get(
     "TIKTOK_REDIRECT_URI", "https://TU-TUNEL.example.com/callback"
 )
 SCOPES = "user.info.basic,video.upload"
-TOKEN_FILE = os.path.expanduser("~/.tiktok_rock_factory_token")
-KEY_FILE = os.path.expanduser("~/.tiktok_rock_factory_key")
-SECRET_FILE = os.path.expanduser("~/.tiktok_rock_factory_secret")
 
 _auth_code = None
 
 
 def _load_secret():
-    if os.path.exists(SECRET_FILE):
-        return open(SECRET_FILE).read().strip()
+    if os.path.exists(CLIENT_SECRET_FILE):
+        return open(CLIENT_SECRET_FILE).read().strip()
     return os.environ.get("TIKTOK_CLIENT_SECRET", "")
 
 
 def _load_key(cli):
     if cli:
         return cli
-    if os.path.exists(KEY_FILE):
-        return open(KEY_FILE).read().strip()
+    if os.path.exists(CLIENT_KEY_FILE):
+        return open(CLIENT_KEY_FILE).read().strip()
     return os.environ.get("TIKTOK_CLIENT_KEY", "")
 
 
@@ -101,10 +107,20 @@ def _exchange(client_key, client_secret, code):
         return json.loads(r.read().decode())
 
 
-def run(client_key=None, redirect_uri=None):
+def run(account=None, client_key=None, redirect_uri=None):
     global REDIRECT_URI
     if redirect_uri:
         REDIRECT_URI = redirect_uri
+    if account is None:
+        account = "rock-factory"
+    try:
+        _, email, TOKEN_FILE = (
+            account, account_email(account), token_path(account)
+        )
+    except KeyError as e:
+        raise SystemExit(str(e))
+    print(f"Cuenta objetivo: {account} ({email})")
+    print(f"Token se guardara en: {TOKEN_FILE}")
     client_key = _load_key(client_key)
     client_secret = _load_secret()
     if not client_key:
@@ -162,10 +178,15 @@ def run(client_key=None, redirect_uri=None):
 
 if __name__ == "__main__":
     import argparse
+
+    from accounts import known_slugs
+
     ap = argparse.ArgumentParser()
+    ap.add_argument("--account", default="rock-factory", choices=known_slugs(),
+                    help="Slug del canal/cuenta. Decide en qué archivo de token se guarda.")
     ap.add_argument("--client-key", default=None)
     ap.add_argument("--redirect-uri", default=None,
                     help="Redirect URI https (debe coincidir con el portal de TikTok). "
                          "Ej: https://xxxx.ngrok.io/callback o el de cloudflared.")
     a = ap.parse_args()
-    run(a.client_key, a.redirect_uri)
+    run(a.account, a.client_key, a.redirect_uri)
