@@ -1,4 +1,45 @@
 {
   "nota": "Noticias y avances de IA generativa para el canal IA Generativa News (multiplataforma). Cada nota: titulo + lineas (una por toma del video). El video queda mudo; el audio se elige al publicar.",
-  "noticias": []
+  "noticias": [
+    {
+      "titulo": "Modelos multimodales ya son estándar",
+      "lineas": [
+        "Texto, imagen y audio en un solo modelo ya es realidad.",
+        "Los asistentes entienden contexto visual y sonoro.",
+        "La frontera es la integración, no la métrica aislada."
+      ]
+    },
+    {
+      "titulo": "La IA en el celular",
+      "lineas": [
+        "Modelos pequeños corren sin conexión en tu teléfono.",
+        "Privacidad por diseño: el dato no sale del dispositivo.",
+        "El edge computing democratiza el acceso a la IA."
+      ]
+    },
+    {
+      "titulo": "Agentes autónomos",
+      "lineas": [
+        "Los agentes planifican, usan herramientas y se corrigen solos.",
+        "La automatización sube de tarea a flujo completo.",
+        "El humano supervisa, la máquina ejecuta."
+      ]
+    },
+    {
+      "titulo": "Creatividad generada",
+      "lineas": [
+        "Música, video y código nacen de un prompt.",
+        "El rol creativo muta: del autor al director.",
+        "La herramienta amplifica, no reemplaza, la intención."
+      ]
+    },
+    {
+      "titulo": "Riesgos que vigilar",
+      "lineas": [
+        "Alucinaciones y sesgos siguen siendo el punto crítico.",
+        "La trazabilidad del dato ya es requisito legal.",
+        "Usar IA bien es también saber cuándo no usarla."
+      ]
+    }
+  ]
 }

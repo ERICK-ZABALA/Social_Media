@@ -1,4 +1,45 @@
 {
   "nota": "Insights de liderazgo y desarrollo personal para el canal Insight Star (LinkedIn/X). Cada entrada: titulo + lineas (una por toma del video). El video queda mudo; el audio se elige en TikTok al publicar.",
-  "insights": []
+  "insights": [
+    {
+      "titulo": "Lidera con propósito",
+      "lineas": [
+        "El liderazgo no es un cargo, es una influencia.",
+        "Claridad de propósito mueve más que la autoridad.",
+        "Quien sirve primero, lidera mejor."
+      ]
+    },
+    {
+      "titulo": "La disciplina vence al talento",
+      "lineas": [
+        "El talento abre puertas, la disciplina las mantiene.",
+        "Pequeñas acciones diarias construyen grandes resultados.",
+        "La constancia es una forma de respeto propio."
+      ]
+    },
+    {
+      "titulo": "Equipos que confían",
+      "lineas": [
+        "La confianza es la moneda de los equipos de alto rendimiento.",
+        "Errores sin castigo generan innovación.",
+        "La seguridad psicológica multiplica el talento."
+      ]
+    },
+    {
+      "titulo": "Decide como quien aprende",
+      "lineas": [
+        "Toda decisión es reversible hasta que no lo es.",
+        "La mejor opción suele ser la siguiente pregunta.",
+        "Aprender en público es una ventaja competitiva."
+      ]
+    },
+    {
+      "titulo": "Comunicación que conecta",
+      "lineas": [
+        "No comunicas lo que dices, sino lo que entienden.",
+        "Escuchar es la mitad olvidada de hablar.",
+        "Una historia vale más que diez diapositivas."
+      ]
+    }
+  ]
 }
