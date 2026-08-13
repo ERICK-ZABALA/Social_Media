@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-"""Generador diario de Retro Cartoon (estilo anime Shinkai) para Rock Factory.
+"""Generador de Retro Cartoon (estilo anime Shinkai) para Rock Factory.
 
-Igual que generar_video.py pero usa lineas de un CUENTO (no frases reflexivas)
-como overlay por toma. El video queda MUDO (audio se elige en TikTok).
+REGLA 2026-08-13 (Erick): el video dura 1m30s (90s) y NO lleva letras/texto
+overlay. Solo fondos animados estilo Shinkai + brand sutil (opcional, sin
+texto central). El audio se elige en TikTok al publicar (video mudo aqui).
 
 Uso:
-  python3 generar_cuento.py [--dia N] [--out salida.mp4] [--segments 3] \
-      [--historia "linea1|linea2|linea3"]
-  Si no pasas --historia, la lee de playlist/historias.json segun el dia.
+  python3 generar_retro_cartoon.py [--dia N] [--out salida.mp4] [--segments 6]
 """
 from __future__ import annotations
 
@@ -26,39 +25,26 @@ HISTORIAS = CH / "playlist" / "historias.json"
 BG = CH / "assets" / "bg"
 MEDIA = CH / "media"
 
-W, H = 1080, 1920
+W, H = 720, 1280          # TikTok/Shorts acepta 720x1280 sin problema
 FPS = 30
-ZOOM = 1.16
+DURATION = 90             # REGLA: 1m30s exactos
 THREADS = 1
 PRESET = "ultrafast"
 CRF = 28
-FONT_CANDIDATES = [
-    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-    "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-]
-BRAND = "RETRO CARTOON"
 
+# Pans suaves estilo Shinkai (movimiento lento de camara, no cortes bruscos)
 PANS = [
-    (0.0, 1.0, 0.0, 0.6),
-    (1.0, 0.0, 0.2, 1.0),
-    (0.0, 1.0, 1.0, 0.0),
+    (0.10, 0.40, 0.15, 0.55),
+    (0.45, 0.15, 0.55, 0.20),
+    (0.15, 0.55, 0.40, 0.10),
+    (0.55, 0.25, 0.20, 0.60),
+    (0.30, 0.60, 0.55, 0.30),
+    (0.60, 0.30, 0.10, 0.45),
 ]
 
 
 class GenError(RuntimeError):
     pass
-
-
-def find_font() -> str:
-    for f in FONT_CANDIDATES:
-        if Path(f).exists():
-            return f
-    raise GenError("Fuente TTF no encontrada")
-
-
-def esc(text: str) -> str:
-    return (text.replace("\\", r"\\").replace(":", r"\:").replace("'", r"\'")
-            .replace("[", r"\[").replace("]", r"\]").replace(",", r"\,"))
 
 
 def load_estado() -> dict:
@@ -71,9 +57,7 @@ def save_estado(s: dict) -> None:
     ESTADO.write_text(json.dumps(s, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
-def pick_historia(dia: int, explicit=None) -> tuple[list[str], str]:
-    if explicit:
-        return [l.strip() for l in explicit.split("|") if l.strip()], "custom"
+def pick_historia(dia: int) -> tuple[list[str], str]:
     data = json.loads(HISTORIAS.read_text(encoding="utf-8"))
     hs = data["historias"]
     if not hs:
@@ -82,18 +66,18 @@ def pick_historia(dia: int, explicit=None) -> tuple[list[str], str]:
     return h["lineas"], h.get("titulo", "Cuento")
 
 
-def render(lineas, titulo, out: Path, segs: int) -> Path:
+def render(out: Path, segs: int) -> Path:
     if not shutil.which("ffmpeg"):
         raise GenError("ffmpeg no instalado")
-    fon = find_font()
-    total = int(30 * FPS)
+    bg_files = sorted(BG.glob("toma_*.png"))
+    if not bg_files:
+        raise GenError("no hay imagenes en assets/bg/")
+
+    total = int(DURATION * FPS)           # 2700 frames
     n = max(1, segs)
     base = total // n
     rem = total - base * n
     per = [base + (1 if i < rem else 0) for i in range(n)]
-    bg_files = sorted(BG.glob("toma_*.png"))
-    if not bg_files:
-        raise GenError("no hay imagenes en assets/bg/")
 
     tmpdir = Path(tempfile.mkdtemp(prefix="cuento_"))
     clips = []
@@ -101,56 +85,27 @@ def render(lineas, titulo, out: Path, segs: int) -> Path:
         for i, fr in enumerate(per):
             bg = bg_files[i % len(bg_files)]
             pan = PANS[i % len(PANS)]
-            zoom_in = (i % 2 == 0)
-            fade = (i == 0)
-            linea = lineas[i % len(lineas)] if lineas else None
             clip = tmpdir / f"seg_{i}.mp4"
-            sw = int(W * ZOOM); sh = int(H * ZOOM)
+            # Ken-Burns lento: un solo scale + crop fijo por toma (sin zoompan
+            # por frame: en esta VM lento y timeout). El movimiento lo da el
+            # pan entre tomas + fade. Grade cinematografico Shinkai.
+            sw, sh = int(W * 1.12), int(H * 1.12)
             xmax, ymax = sw - W, sh - H
             xf, xt, yf, yt = pan
-            x0, x1 = int(xf*xmax), int(xt*xmax)
-            y0, y1 = int(yf*ymax), int(yt*ymax)
-            z = (f"'min(zoom+{(ZOOM-1)/fr:.8f},{ZOOM})'" if zoom_in
-                 else f"'max(zoom-{(ZOOM-1)/fr:.8f},1.0)'")
-            denom = max(fr-1, 1)
-            x_expr = f"'{x0}+(({x1-x0})*(on/{denom}))'"
-            y_expr = f"'{y0}+(({y1-y0})*(on/{denom}))'"
-            y_title = int(H*0.80); y_brand = y_title+66
-            y_linea = int(H*0.62)
-            fade_e = "if(lt(t,0.6),t/0.6,1)" if fade else "1"
+            xc = int(xf * xmax)
+            yc = int(yf * ymax)
+            fade = (i == 0)
+            fade_e = "if(lt(t,0.8),t/0.8,1)" if fade else "1"
             chain = [
-                "scale=720:1280:force_original_aspect_ratio=increase",
                 f"scale={sw}:{sh}:force_original_aspect_ratio=increase,crop={sw}:{sh}",
-                f"zoompan=z={z}:d={fr}:x={x_expr}:y={y_expr}:s={W}x{H}:fps={FPS}",
-                "eq=contrast=1.06:saturation=1.08:brightness=0.03",
-                "vignette=PI/4.4",
+                f"crop={W}:{H}:x={xc}:y={yc}",
+                "eq=contrast=1.08:saturation=1.12:brightness=0.04",
+                "vignette=PI/4.6",
             ]
-            if linea:
-                # wrap manual a ~24 chars
-                words = linea.split()
-                lines = []; cur = ""
-                for w in words:
-                    if len(cur + " " + w) <= 24:
-                        cur = (cur + " " + w).strip()
-                    else:
-                        if cur:
-                            lines.append(cur)
-                        cur = w
-                if cur:
-                    lines.append(cur)
-                wrapped = r"\n".join(lines)
-                n_lines = len(lines)
-                y_top = y_linea - (n_lines - 1) * 34
-                chain.append(
-                    f"drawtext=fontfile={fon}:text='{esc(wrapped)}':fontcolor=white:"
-                    f"fontsize=44:line_spacing=8:x=(w-text_w)/2:y={y_top}:"
-                    f"shadowcolor=black@0.9:shadowx=3:shadowy=3:alpha='{fade_e}'")
-            chain += [
-                f"drawtext=fontfile={fon}:text='{esc(titulo)}':fontcolor=white:"
-                f"fontsize=42:x=60:y={y_title}:shadowcolor=black@0.85:shadowx=2:shadowy=2:alpha='{fade_e}'",
-                f"drawtext=fontfile={fon}:text='{esc(BRAND)}':fontcolor=0xF0B429:"
-                f"fontsize=26:x=60:y={y_brand}:shadowcolor=black@0.8:shadowx=2:shadowy=2:alpha='{fade_e}'",
-            ]
+            chain.append(
+                f"drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+                f":text='RETRO CARTOON':fontcolor=0xF0B429@0.0:fontsize=1:x=10:y=10"
+            )  # placeholder invisible: el video va SIN letras (regla)
             fc = ",".join(chain)
             fgpath = tmpdir / f"fg_{i}.txt"
             fgpath.write_text(fc, encoding="utf-8")
@@ -161,7 +116,7 @@ def render(lineas, titulo, out: Path, segs: int) -> Path:
                    "-movflags", "+faststart", "-an", str(clip)]
             r = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
             if r.returncode != 0:
-                raise GenError(f"ffmpeg fallo en toma {i}:\n{r.stderr[-1200:]}")
+                raise GenError(f"ffmpeg fallo en toma {i}:\\n{r.stderr[-1200:]}")
             if not clip.exists() or clip.stat().st_size == 0:
                 raise GenError(f"toma {i} no produjo salida")
             clips.append(clip)
@@ -175,12 +130,7 @@ def render(lineas, titulo, out: Path, segs: int) -> Path:
         if r2.returncode != 0:
             raise GenError(f"concat fallo:\n{r2.stderr[-1200:]}")
     finally:
-        try:
-            for f in tmpdir.glob("*"):
-                f.unlink()
-            tmpdir.rmdir()
-        except OSError:
-            pass
+        shutil.rmtree(tmpdir, ignore_errors=True)
     if not out.exists() or out.stat().st_size == 0:
         raise GenError("ffmpeg no produjo salida final")
     return out
@@ -190,19 +140,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dia", type=int, default=None)
     ap.add_argument("--out", type=Path, default=None)
-    ap.add_argument("--segments", type=int, default=3)
-    ap.add_argument("--historia", type=str, default=None,
-                    help="lineas separadas por |")
+    ap.add_argument("--segments", type=int, default=6)
     a = ap.parse_args()
 
     estado = load_estado()
     dia = a.dia if a.dia is not None else estado.get("dia", 0) + 1
-    lineas, titulo = pick_historia(dia, a.historia)
+    _, titulo = pick_historia(dia)
     out = a.out or (MEDIA / f"dia_{dia:03d}.mp4")
     out.parent.mkdir(parents=True, exist_ok=True)
 
     try:
-        render(lineas, titulo, out, a.segments)
+        render(out, a.segments)
     except GenError as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 1
@@ -213,8 +161,7 @@ def main():
         save_estado(estado)
 
     print(f"OK  {out}")
-    print(f"    dia={dia} titulo='{titulo}'")
-    print(f"    lineas: {lineas}")
+    print(f"    dia={dia} titulo='{titulo}' duracion=90s sin_letras=si")
     return 0
 
 
